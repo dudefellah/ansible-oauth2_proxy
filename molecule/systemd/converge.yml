@@ -10,4 +10,3 @@
         oauth2_proxy_client_secret: 0123456789012345
         oauth2_proxy_cookie_secret: 0123456789012345
         oauth2_proxy_email_domains: mytestdomainthingy.com
-
