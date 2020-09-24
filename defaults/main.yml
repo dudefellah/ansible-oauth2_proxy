@@ -22,12 +22,15 @@ oauth2_proxy_basic_auth_password: null
 oauth2_proxy_client_id: null
 oauth2_proxy_client_secret: null
 oauth2_proxy_client_secret_file: null
-oauth2_proxy_cookie_domain: null
+oauth2_proxy_cookie_domains: null
 oauth2_proxy_cookie_expire: "168h0m0s"
 oauth2_proxy_cookie_httponly: "true"
 oauth2_proxy_cookie_name: "_oauth2_proxy"
 oauth2_proxy_cookie_path: "/"
 oauth2_proxy_cookie_refresh: null
+
+# Generate one:
+# python -c 'import os,base64; print(base64.urlsafe_b64encode(os.urandom(16)).decode())'
 oauth2_proxy_cookie_secret: null
 oauth2_proxy_cookie_secure: "true"
 oauth2_proxy_cookie_samesite: ""
@@ -46,8 +49,8 @@ oauth2_proxy_github_org: null
 oauth2_proxy_github_team: null
 oauth2_proxy_github_repo: null
 oauth2_proxy_github_token: null
-oauth2_proxy_github_user: null
-oauth2_proxy_gitlab_group: null
+oauth2_proxy_github_users: null
+oauth2_proxy_gitlab_groups: null
 oauth2_proxy_google_admin_email: null
 oauth2_proxy_google_group: null
 oauth2_proxy_google_service_account_json: null
@@ -77,7 +80,7 @@ oauth2_proxy_pass_user_headers: "true"
 oauth2_proxy_profile_url: null
 oauth2_proxy_prompt: ""
 oauth2_proxy_provider: google
-oauth2_proxy_provider_ca_file: null
+oauth2_proxy_provider_ca_files: null
 oauth2_proxy_provider_display_name: # (depends on provider)
 oauth2_proxy_ping_path: "/ping"
 oauth2_proxy_ping_user_agent: "" # (don't check user agent)
@@ -120,13 +123,12 @@ oauth2_proxy_standard_logging: "true"
 oauth2_proxy_standard_logging_format: null
 oauth2_proxy_tls_cert_file: null
 oauth2_proxy_tls_key_file: null
-oauth2_proxy_upstream: null
-oauth2_proxy_user_id_claim:
-  - "email"
-oauth2_proxy_allowed_group: null
+oauth2_proxy_upstreams: null
+oauth2_proxy_user_id_claim: "email"
+oauth2_proxy_allowed_groups: null
 oauth2_proxy_validate_url: null
-oauth2_proxy_whitelist_domain: null
-oauth2_proxy_trusted_ip: null
+oauth2_proxy_whitelist_domains: null
+oauth2_proxy_trusted_ips: null
 
 # Systemd service state values
 oauth2_proxy_service_state: started

@@ -1,0 +1,15 @@
+---
+- name: Install epel for daemonize
+  package:
+    name:
+      - epel-release
+    state: installed
+
+- name: Install dependency packages
+  package:
+    name:
+      - daemonize
+      - sudo
+      - tar
+      - gzip
+    state: present

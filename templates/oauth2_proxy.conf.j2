@@ -1,8 +1,6 @@
 approval_prompt = "{{ oauth2_proxy_approval_prompt }}"
 auth_logging = "{{ oauth2_proxy_auth_logging }}"
 auth_logging_format = "{{ oauth2_proxy_auth_logging_format }}"
-
-
 {% if oauth2_proxy_authenticated_emails_file is not none %}
 authenticated_emails_file = "{{ oauth2_proxy_authenticated_emails_file }}"
 {% endif %}
@@ -19,8 +17,8 @@ client_secret = "{{ oauth2_proxy_client_secret }}"
 {% if oauth2_proxy_client_secret_file is not none %}
 client_secret_file = "{{ oauth2_proxy_client_secret_file }}"
 {% endif %}
-{% if oauth2_proxy_cookie_domain is not none %}
-cookie_domain = "{{ oauth2_proxy_cookie_domain }}"
+{% if oauth2_proxy_cookie_domains is not none %}
+cookie_domains = {{ oauth2_proxy_cookie_domains | to_json }}
 {% endif %}
 cookie_expire = "{{ oauth2_proxy_cookie_expire }}"
 cookie_httponly = "{{ oauth2_proxy_cookie_httponly }}"
@@ -69,11 +67,11 @@ github_repo = "{{ oauth2_proxy_github_repo }}"
 {% if oauth2_proxy_github_token is not none %}
 github_token = "{{ oauth2_proxy_github_token }}"
 {% endif %}
-{% if oauth2_proxy_github_user is not none %}
-github_user = "{{ oauth2_proxy_github_user }}"
+{% if oauth2_proxy_github_users is not none %}
+github_users = {{ oauth2_proxy_github_user | to_json }}
 {% endif %}
-{% if oauth2_proxy_gitlab_group is not none %}
-gitlab_group = "{{ oauth2_proxy_gitlab_group }}"
+{% if oauth2_proxy_gitlab_groups is not none %}
+gitlab_groups = {{ oauth2_proxy_gitlab_groups | to_json }}
 {% endif %}
 {% if oauth2_proxy_google_admin_email is not none %}
 google_admin_email = "{{ oauth2_proxy_google_admin_email }}"
@@ -123,8 +121,8 @@ profile_url = "{{ oauth2_proxy_profile_url }}"
 {% endif %}
 prompt = "{{ oauth2_proxy_prompt }}"
 provider = "{{ oauth2_proxy_provider }}"
-{% if oauth2_proxy_provider_ca_file is not none %}
-provider_ca_file = "{{ oauth2_proxy_provider_ca_file }}"
+{% if oauth2_proxy_provider_ca_files is not none %}
+provider_ca_files = {{ oauth2_proxy_provider_ca_file | to_json }}
 {% endif %}
 provider_display_name = "{{ oauth2_proxy_provider_display_name }}"
 ping_path = "{{ oauth2_proxy_ping_path }}"
@@ -142,7 +140,7 @@ redeem_url = "{{ oauth2_proxy_redeem_url }}"
 redirect_url = "{{ oauth2_proxy_redirect_url }}"
 {% endif %}
 {% if oauth2_proxy_redis_cluster_connection_urls is not none %}
-redis_cluster_connection_urls = "{{ oauth2_proxy_redis_cluster_connection_urls }}"
+redis_cluster_connection_urls = {{ oauth2_proxy_redis_cluster_connection_urls | to_json }}
 {% endif %}
 {% if oauth2_proxy_redis_connection_url is not none %}
 redis_connection_url = "{{ oauth2_proxy_redis_connection_url }}"
@@ -157,7 +155,7 @@ redis_sentinel_password = "{{ oauth2_proxy_redis_sentinel_password }}"
 redis_sentinel_master_name = "{{ oauth2_proxy_redis_sentinel_master_name }}"
 {% endif %}
 {% if oauth2_proxy_redis_sentinel_connection_urls is not none %}
-redis_sentinel_connection_urls = "{{ oauth2_proxy_redis_sentinel_connection_urls }}"
+redis_sentinel_connection_urls = {{ oauth2_proxy_redis_sentinel_connection_urls | to_json }}
 {% endif %}
 redis_use_cluster = "{{ oauth2_proxy_redis_use_cluster }}"
 redis_use_sentinel = "{{ oauth2_proxy_redis_use_sentinel }}"
@@ -199,19 +197,19 @@ tls_cert_file = "{{ oauth2_proxy_tls_cert_file }}"
 {% if oauth2_proxy_tls_key_file is not none %}
 tls_key_file = "{{ oauth2_proxy_tls_key_file }}"
 {% endif %}
-{% if oauth2_proxy_upstream is not none %}
-upstream = "{{ oauth2_proxy_upstream }}"
+{% if oauth2_proxy_upstreams is not none %}
+upstreams = {{ oauth2_proxy_upstream | to_json }}
 {% endif %}
 user_id_claim = "{{ oauth2_proxy_user_id_claim }}"
-{% if oauth2_proxy_allowed_group is not none %}
-allowed_group = "{{ oauth2_proxy_allowed_group }}"
+{% if oauth2_proxy_allowed_groups is not none %}
+allowed_groups = {{ oauth2_proxy_allowed_group | to_json }}
 {% endif %}
 {% if oauth2_proxy_validate_url is not none %}
 validate_url = "{{ oauth2_proxy_validate_url }}"
 {% endif %}
-{% if oauth2_proxy_whitelist_domain is not none %}
-whitelist_domain = "{{ oauth2_proxy_whitelist_domain }}"
+{% if oauth2_proxy_whitelist_domains is not none %}
+whitelist_domains = {{ oauth2_proxy_whitelist_domain | to_json }}
 {% endif %}
-{% if oauth2_proxy_trusted_ip is not none %}
-trusted_ip = "{{ oauth2_proxy_trusted_ip }}"
+{% if oauth2_proxy_trusted_ips is not none %}
+trusted_ips = {{ oauth2_proxy_trusted_ip | to_json }}
 {% endif %}

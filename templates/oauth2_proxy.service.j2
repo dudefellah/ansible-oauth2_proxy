@@ -15,13 +15,31 @@ After=syslog.target network.target
 Type=forking
 User={{ oauth2_proxy_user_name }}
 Group={{ oauth2_proxy_user_group }}
-SuccessExitStatus=0/SUCCESS
-ExecStart={{ oauth2_proxy_install_path }}/bin/oauth2_proxy --config "/etc/oauth2_proxy/oauth2_proxy.conf" --logging-filename /var/log/oauth2_proxy/oauth2_proxy.log
-
+ExecStart=+daemonize -u {{ oauth2_proxy_user_name }} -p /var/run/oauth2_proxy.pid {{ oauth2_proxy_install_path }}/bin/oauth2_proxy --config "/etc/oauth2_proxy/oauth2_proxy.conf" --logging-filename /var/log/oauth2_proxy/oauth2_proxy.log
+TimeoutSec=1200
 KillMode=process
-GuessMainPID=no
-RemainAfterExit=yes
-ExecReload=/bin/kill -HUP $MAINPID
+PidFile=/var/run/oauth2_proxy.pid
+
+# Provide a private /tmp and /var/tmp.
+PrivateTmp=true
+
+# Mount /usr, /boot/ and /etc read-only for the process.
+ProtectSystem=full
+
+# Allow access to /home, /root and /run/user
+# Chosing "false" is actually no hardening, this is just to demonstrate the usage of a service. Well, I could have omitted it. True. :)
+ProtectHome=false
+
+# Disallow the process and all of its children to gain
+# new privileges through execve().
+NoNewPrivileges=true
+
+# Use a new /dev namespace only populated with API pseudo devices
+# such as /dev/null, /dev/zero and /dev/random.
+PrivateDevices=true
+
+# Deny the creation of writable and executable memory mappings.
+MemoryDenyWriteExecute=true
 
 [Install]
 WantedBy=multi-user.target

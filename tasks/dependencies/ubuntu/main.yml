@@ -1,0 +1,6 @@
+---
+- name: Install Debian dependencies
+  package:
+    name:
+      - daemonize
+    state: present

@@ -1,0 +1,58 @@
+---
+# CentOS 8 doesn't come with any reasonable way of getting demonize
+# so we'll fetch a release off of Github
+- name: Look for daemonize
+  stat:
+    path: /usr/local/sbin/daemonize
+  changed_when: false
+  register: daemonize_st
+
+- block:
+    - name: Create tmpdir
+      tempfile:
+        state: directory
+      changed_when: false
+      register: tmpdir
+
+    - name: Get dependencies for building daemonize
+      package:
+        name:
+          - make
+          - gcc
+        state: present
+
+    - name: Download daemonize
+      get_url:
+        url: https://github.com/bmc/daemonize/archive/release-1.7.8.tar.gz
+        dest: "{{ tmpdir.path }}/release-1.7.8.tar.gz"
+        mode: "0600"
+        checksum: "sha256:20c4fc9925371d1ddf1b57947f8fb93e2036eb9ccc3b43a1e3678ea8471c4c60"
+
+    - name: Extract source
+      unarchive:
+        src: "{{ tmpdir.path }}/release-1.7.8.tar.gz"
+        dest: "{{ tmpdir.path }}"
+        mode: "0700"
+        remote_src: true
+
+    - name: Configure
+      command: "./configure --prefix=/usr/local"
+      args:
+        chdir: "{{ tmpdir.path }}/daemonize-release-1.7.8"
+
+    - name: Make
+      command: "make"
+      args:
+        chdir: "{{ tmpdir.path }}/daemonize-release-1.7.8"
+
+    - name: Make install
+      command: make install
+      args:
+        chdir: "{{ tmpdir.path }}/daemonize-release-1.7.8"
+  always:
+    - name: Cleanup
+      file:
+        path: "{{ tmpdir.path }}"
+        state: absent
+  when:
+    - "not daemonize_st.stat.exists"
