@@ -1,48 +1,202 @@
 ---
+# tasks file for ansible-oauth2_proxy
+- name: Load platform variables
+  include_vars: "{{ filename }}"
+  vars:
+    vars_files:
+      files:
+        - "{{ role_path }}/vars/{{ ansible_distribution | lower }}/\
+          {{ ansible_distribution_major_version }}.yml"
+        - "{{ role_path }}/vars/{{ ansible_distribution | lower }}/\
+          main.yml"
+        - "{{ role_path }}/vars/{{ ansible_os_family | lower }}/\
+          main.yml"
+        - "{{ role_path }}/vars/main.yml"
+  loop: "{{ q('first_found', vars_files, errors='ignore') }}"
+  loop_control:
+    loop_var: filename
 
-- name: Get the oauth2_proxy binary.
-  get_url:
-    url: https://github.com/bitly/oauth2_proxy/releases/download/v2.0.1/oauth2_proxy-2.0.1.linux-amd64.go1.4.2.tar.gz
-    dest: /tmp/oauth2_proxy.tar.gz
-    checksum: sha256:c6d8f6d74e1958ce1688f3cf7d60648b9d0d6d4344d74c740c515a00b4e023ad
+- name: Load platform dependencies
+  vars:
+    tasks:
+      files:
+        - "{{ role_path }}/tasks/dependencies/\
+          {{ ansible_distribution | lower }}/\
+          {{ ansible_distribution_major_version }}.yml"
+        - "{{ role_path }}/tasks/dependencies/\
+          {{ ansible_distribution | lower }}/\
+          main.yml"
+        - "{{ role_path }}/tasks/dependencies/\
+          {{ ansible_os_family | lower }}.yml"
+        - "{{ role_path }}/tasks/dependencies/main.yml"
+  include_tasks: "{{ filename }}"
+  loop: "{{ q('first_found', tasks, errors='ignore') }}"
+  loop_control:
+    loop_var: filename
 
-- name: Uncompress the binary.
-  unarchive:
-    src: /tmp/oauth2_proxy.tar.gz
-    dest: /tmp
-    copy: no
+- name: Get the existing oauth2 proxy version
+  command: "{{ oauth2_proxy_install_path }}/bin/oauth2_proxy --version"
+  changed_when: false
+  failed_when: false
+  register: _oauth2_proxy_current_version_cmd
 
-- name: Make the /opt directory.
-  file: path=/opt/oauth2_proxy state=directory
+- name: Get the oauth2_proxy current version
+  set_fact:
+    _oauth2_proxy_current_version: >-
+      {{ _oauth2_proxy_current_version_cmd.stdout |
+        regex_replace('^oauth2[_-]proxy +v([^ ]+).*', '\1') }}
+  when:
+    - "_oauth2_proxy_current_version_cmd.rc == 0"
 
-- name: Move the binary to /opt/oauth2_proxy.
-  command: mv /tmp/oauth2_proxy-2.0.1.linux-amd64.go1.4.2/oauth2_proxy /opt/oauth2_proxy/
+- block:
+    - name: Create tempdir for archive contents
+      tempfile:
+        state: directory
+      changed_when: false
+      register: tmpdir
 
-- name: Remove the related /tmp directory.
-  file: path=/tmp/oauth2_proxy-2.0.1.linux-amd64.go1.4.2 state=absent
+    - name: Create tempfile for initial download
+      tempfile:
+        state: file
+      changed_when: false
+      register: tmpfile
 
-- name:  Link it in /usr/local/bin.
-  file: src=/opt/oauth2_proxy/oauth2_proxy dest=/usr/local/bin/oauth2_proxy state=link
+    - name: Set the appropriate architecture
+      set_fact:
+        _oauth2_arch: "{{ ansible_architecture }}"
+
+    - name: Set the architecture to amd64 for x86_64
+      set_fact:
+        _oauth2_arch: "amd64"
+      when:
+        - "ansible_architecture == 'x86_64'"
+
+    - name: Get the oauth2_proxy binary.
+      get_url:
+        url: "https://github.com/oauth2-proxy/oauth2-proxy/releases/download/\
+        v{{ oauth2_proxy_version }}/oauth2-proxy-v{{ oauth2_proxy_version }}\
+        .linux-{{ _oauth2_arch }}.tar.gz"
+        dest: "{{ tmpfile.path }}"
+        checksum: "{{ oauth2_proxy_bundle_checksum | default(omit) }}"
+
+    - name: Uncompress the binary.
+      unarchive:
+        src: "{{ tmpfile.path }}"
+        dest: "{{ tmpdir.path }}"
+        mode: "0700"
+        copy: false
+
+    - name: Make the dest oauth2 directory.
+      file:
+        path: "{{ oauth2_proxy_install_path }}/bin"
+        state: directory
+        mode: "0755"
+
+    - name: Move the binary to the destdir
+      copy:
+        src: "{{ tmpdir.path }}/oauth2-proxy-v{{ oauth2_proxy_version }}.\
+              linux-{{ _oauth2_arch }}/oauth2-proxy"
+        dest: "{{ oauth2_proxy_install_path }}/bin/oauth2_proxy"
+        mode: "0755"
+        owner: root
+        group: root
+        remote_src: true
+  always:
+    - name: Cleanup temporary files
+      file:
+        path: "{{ tmp_path }}"
+        state: absent
+      changed_when: false
+      loop:
+        - "{{ tmpdir.path }}"
+        - "{{ tmpfile.path }}"
+      loop_control:
+        loop_var: tmp_path
+  when:
+    - >
+      (_oauth2_proxy_current_version_cmd.rc != 0) or
+      (_oauth2_proxy_current_version != oauth2_proxy_version)
+
+- name: Create the oauth2_proxy user group
+  group:
+    name: "{{ oauth2_proxy_user_group }}"
+    state: present
+  when:
+    - "oauth2_proxy_user_group is not none"
 
 - name: Create a user and group for oauth2_proxy.
-  user: name=oauth2_proxy comment="oauth2_proxy service" state=present
+  user:
+    name: "{{ oauth2_proxy_user_name }}"
+    group: "{{ oauth2_proxy_user_group }}"
+    comment: "{{ oauth2_proxy_user_comment }}"
+    state: present
+  when:
+    - "oauth2_proxy_user_name is not none"
 
-- name: Create the /etc/oauth2_proxy directory.
-  file: path=/etc/oauth2_proxy state=directory
-
-- name: Create the /etc/oauth2_proxy configuration file.
-  file: path=/etc/oauth2_proxy/oauth2_proxy.conf state=touch
+- name: Create the config dir directory.
+  file:
+    path: "{{ oauth2_proxy_etc_path }}"
+    state: directory
+    owner: "{{ oauth2_proxy_user_name | default('root') }}"
+    group: "{{ oauth2_proxy_user_group | default('root') }}"
+    mode: "0750"
 
 - name: Create the conf file.
-  template: src=oauth2_proxy.conf.j2 dest=/etc/oauth2_proxy/oauth2_proxy.conf mode="0444"
+  template:
+    src: oauth2_proxy.conf.j2
+    dest: "{{ oauth2_proxy_etc_path }}/oauth2_proxy.conf"
+    owner: "{{ oauth2_proxy_user_name | default('root') }}"
+    group: "{{ oauth2_proxy_user_group | default('root') }}"
+    mode: "0444"
 
-- name: Create the service file.
-  template: src=oauth2_proxy.j2 dest=/etc/init.d/oauth2_proxy mode="0755"
-  when: ansible_service_mgr == "upstart" or ansible_service_mgr == "sysvinit"
+- name: Create a writable log path for the oauth2 user
+  file:
+    path: /var/log/oauth2_proxy
+    state: directory
+    owner: "{{ oauth2_proxy_user_name }}"
+    group: "{{ oauth2_proxy_user_group }}"
+    mode: "0750"
 
-- name: Create the systemd service file.
-  template: src=oauth2_proxy.service.j2 dest=/lib/systemd/system/oauth2_proxy.service
-  when: ansible_service_mgr == "systemd"
+- name: Create the sysv/upstart init.d file.
+  template:
+    src: oauth2_proxy.j2
+    dest: /etc/init.d/oauth2_proxy
+    owner: root
+    group: root
+    mode: "0755"
+  when:
+    - "ansible_service_mgr in ['upstart', 'sysvinit']"
 
-- name: Start the oauth2_proxy service.
-  service: name=oauth2_proxy state=restarted
+- name: Set the state for the oauth2_proxy service
+  service:
+    name: oauth2_proxy
+    state: "{{ oauth2_proxy_service_state }}"
+    enabled: "{{ oauth2_proxy_service_enabled }}"
+  register: stuff
+  when:
+    - "ansible_service_mgr in ['upstart', 'sysvinit']"
+
+- block:
+    - name: Create the systemd service file.
+      template:
+        src: oauth2_proxy.service.j2
+        dest: "{{ oauth2_proxy_systemd_service_filename }}"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: systemctl daemon-reload
+      when:
+        - "ansible_service_mgr == 'systemd'"
+
+    - meta: flush_handlers
+
+- name: Set the state for the oauth2_proxy service
+  service:
+    name: >-
+      {{ oauth2_proxy_systemd_service_filename |
+         basename |
+         regex_replace('.service', '') }}
+    state: "{{ oauth2_proxy_service_state }}"
+    enabled: "{{ oauth2_proxy_service_enabled }}"
+  when:
+    - "ansible_service_mgr == 'systemd'"

@@ -1,9 +1,145 @@
 ---
-
-oauth2_proxy_cookie_expire: "730h"
+# These are the values that will end up in the config file
+# The configuration options will have the initial 'oauth2_proxy_'
+# string stripped.
+#
+# Any value that is null by default will be left out of the configuration
+# when it's null. All other values will be included and have been set to
+# their default values per the oauth2_proxy documentation here:
+#
+# https://github.com/oauth2-proxy/oauth2-proxy/blob/master/docs/configuration/configuration.md#config-file
+#
+# The oauth2_proxy_client_id, oauth2_proxy_client_secret,
+# oauth2_proxy_cookie_secret and oauth2_proxy_email_domains values are
+# exceptions in that they're null by default, but we will still try to add
+# them to the conifguration since they're required values.
+oauth2_proxy_approval_prompt: "force"
+oauth2_proxy_auth_logging: "true"
+oauth2_proxy_auth_logging_format: "{{ '{' }}% raw % {{ '}' }}{{ '{{' }}.Client {{ '}}' }} - {{ '{{' }}.Username {{ '}}' }} [{{ '{{' }}.Timestamp {{ '}}' }}] [{{ '{{' }}.Status{{ '}}' }}] {{ '{{' }}.Message{{ '}}' }}{{ '{' }}% endraw %{{ '}' }}"
+oauth2_proxy_authenticated_emails_file: null
+oauth2_proxy_azure_tenant: common
+oauth2_proxy_basic_auth_password: null
+oauth2_proxy_client_id: null
+oauth2_proxy_client_secret: null
+oauth2_proxy_client_secret_file: null
+oauth2_proxy_cookie_domain: null
+oauth2_proxy_cookie_expire: "168h0m0s"
+oauth2_proxy_cookie_httponly: "true"
 oauth2_proxy_cookie_name: "_oauth2_proxy"
-oauth2_proxy_cookie_secure: true
-oauth2_proxy_email_domains: "['*']"
-oauth2_proxy_pass_access_token: false
-oauth2_proxy_pass_host_header: true
-oauth2_proxy_provider: "github"
+oauth2_proxy_cookie_path: "/"
+oauth2_proxy_cookie_refresh: null
+oauth2_proxy_cookie_secret: null
+oauth2_proxy_cookie_secure: "true"
+oauth2_proxy_cookie_samesite: ""
+oauth2_proxy_custom_templates_dir: null
+oauth2_proxy_display_htpasswd_form: "true"
+oauth2_proxy_email_domains: null
+oauth2_proxy_errors_to_info_log: null
+oauth2_proxy_extra_jwt_issuers: null
+oauth2_proxy_exclude_logging_paths: "" # (no paths excluded)
+oauth2_proxy_flush_interval: "1s"
+oauth2_proxy_force_https: "false"
+oauth2_proxy_banner: null
+oauth2_proxy_footer: null
+oauth2_proxy_gcp_healthchecks: "false"
+oauth2_proxy_github_org: null
+oauth2_proxy_github_team: null
+oauth2_proxy_github_repo: null
+oauth2_proxy_github_token: null
+oauth2_proxy_github_user: null
+oauth2_proxy_gitlab_group: null
+oauth2_proxy_google_admin_email: null
+oauth2_proxy_google_group: null
+oauth2_proxy_google_service_account_json: null
+oauth2_proxy_htpasswd_file: null
+oauth2_proxy_http_address: "127.0.0.1:4180"
+oauth2_proxy_https_address: ":443"
+oauth2_proxy_logging_compress: "false"
+oauth2_proxy_logging_filename: "" # (stdout)
+oauth2_proxy_logging_local_time: "true" # (local time)
+oauth2_proxy_logging_max_age: 7
+oauth2_proxy_logging_max_backups: 0
+oauth2_proxy_logging_max_size: 100
+oauth2_proxy_jwt_key: null
+oauth2_proxy_jwt_key_file: null
+oauth2_proxy_login_url: null
+oauth2_proxy_insecure_oidc_allow_unverified_email: "false"
+oauth2_proxy_insecure_oidc_skip_issuer_verification: "false"
+oauth2_proxy_oidc_issuer_url: null
+oauth2_proxy_oidc_jwks_url: null
+oauth2_proxy_oidc_groups_claim: "groups"
+oauth2_proxy_pass_access_token: "false"
+oauth2_proxy_pass_authorization_header: "false"
+oauth2_proxy_pass_basic_auth: "true"
+oauth2_proxy_prefer_email_to_user: "false"
+oauth2_proxy_pass_host_header: "true"
+oauth2_proxy_pass_user_headers: "true"
+oauth2_proxy_profile_url: null
+oauth2_proxy_prompt: ""
+oauth2_proxy_provider: google
+oauth2_proxy_provider_ca_file: null
+oauth2_proxy_provider_display_name: # (depends on provider)
+oauth2_proxy_ping_path: "/ping"
+oauth2_proxy_ping_user_agent: "" # (don't check user agent)
+oauth2_proxy_proxy_prefix: "/oauth2"
+oauth2_proxy_proxy_websockets: "true"
+oauth2_proxy_pubjwk_url: null
+oauth2_proxy_real_client_ip_header:
+  - X-Real-IP
+oauth2_proxy_redeem_url: null
+oauth2_proxy_redirect_url: null
+oauth2_proxy_redis_cluster_connection_urls: null
+oauth2_proxy_redis_connection_url: null
+oauth2_proxy_redis_password: null
+oauth2_proxy_redis_sentinel_password: null
+oauth2_proxy_redis_sentinel_master_name: null
+oauth2_proxy_redis_sentinel_connection_urls: null
+oauth2_proxy_redis_use_cluster: "false"
+oauth2_proxy_redis_use_sentinel: "false"
+oauth2_proxy_request_logging: "true"
+oauth2_proxy_request_logging_format: "{{ '{' }}% raw % {{ '}' }}{{ '{{' }}.Client {{ '}}' }} - {{ '{{' }}.Username {{ '}}' }} [{{ '{{' }}.Timestamp {{ '}}' }}] [{{ '{{' }}.Status{{ '}}' }}] {{ '{{' }}.Message{{ '}}' }}{{ '{' }}% endraw %{{ '}' }}"
+oauth2_proxy_resource: null
+oauth2_proxy_reverse_proxy: "false"
+oauth2_proxy_scope: null
+oauth2_proxy_session_cookie_minimal: "false"
+oauth2_proxy_session_store_type: cookie
+oauth2_proxy_set_xauthrequest: "false"
+oauth2_proxy_set_authorization_header: "false"
+oauth2_proxy_set_basic_auth: "false"
+oauth2_proxy_signature_key: null
+oauth2_proxy_silence_ping_logging: "false"
+oauth2_proxy_skip_auth_preflight: "false"
+oauth2_proxy_skip_auth_regex: null
+oauth2_proxy_skip_auth_strip_headers: "false"
+oauth2_proxy_skip_jwt_bearer_tokens: "false"
+oauth2_proxy_skip_oidc_discovery: "false"
+oauth2_proxy_skip_provider_button: "false"
+oauth2_proxy_ssl_insecure_skip_verify: "false"
+oauth2_proxy_ssl_upstream_insecure_skip_verify: "false"
+oauth2_proxy_standard_logging: "true"
+oauth2_proxy_standard_logging_format: null
+oauth2_proxy_tls_cert_file: null
+oauth2_proxy_tls_key_file: null
+oauth2_proxy_upstream: null
+oauth2_proxy_user_id_claim:
+  - "email"
+oauth2_proxy_allowed_group: null
+oauth2_proxy_validate_url: null
+oauth2_proxy_whitelist_domain: null
+oauth2_proxy_trusted_ip: null
+
+# Systemd service state values
+oauth2_proxy_service_state: started
+oauth2_proxy_service_enabled: true
+
+# Installation paths and other details
+oauth2_proxy_etc_path: /etc/oauth2_proxy
+oauth2_proxy_install_path: "/opt/oauth2_proxy"
+oauth2_proxy_systemd_service_filename: "/etc/systemd/system/oauth2_proxy.service"
+oauth2_proxy_version: "6.1.1"
+oauth2_proxy_bundle_checksum: "sha256:a661d59c55cfcc2b46ae1f0b24a3e8a2ced5413f931b8b05f7bf4e867c70d912"
+
+# oauth2_proxy user values
+oauth2_proxy_user_name: oauth2_proxy
+oauth2_proxy_user_group: oauth2_proxy
+oauth2_proxy_user_comment: "oauth2_proxy service"

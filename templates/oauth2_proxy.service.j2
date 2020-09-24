@@ -2,6 +2,9 @@
 #
 # Date: Feb 9, 2016
 # Author: Srdjan Grubor <sgnn7@sgnn7.org>
+# Additional Edits
+# Date: Sept 23, 2020
+# Author: Dan Thomson <dthomson@triumf.ca>
 
 [Unit]
 Description=oauth2_proxy daemon service
@@ -9,14 +12,16 @@ After=syslog.target network.target
 
 [Service]
 # oauth2_proxy group and user need to be created before using these lines
-User=oauth2_proxy
-Group=oauth2_proxy
-
-ExecStart=/usr/local/bin/oauth2_proxy -config="/etc/oauth2_proxy/oauth2_proxy.conf"
-ExecReload=/bin/kill -HUP $MAINPID
+Type=forking
+User={{ oauth2_proxy_user_name }}
+Group={{ oauth2_proxy_user_group }}
+SuccessExitStatus=0/SUCCESS
+ExecStart={{ oauth2_proxy_install_path }}/bin/oauth2_proxy --config "/etc/oauth2_proxy/oauth2_proxy.conf" --logging-filename /var/log/oauth2_proxy/oauth2_proxy.log
 
 KillMode=process
-Restart=always
+GuessMainPID=no
+RemainAfterExit=yes
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=multi-user.target

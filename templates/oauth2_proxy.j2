@@ -9,12 +9,13 @@
 # Description:       Enable service provided by daemon.
 ### END INIT INFO
 
-dir="/opt/oauth2_proxy"
-cmd="/usr/local/bin/oauth2_proxy --config=/etc/oauth2_proxy/oauth2_proxy.conf"
-user="oauth2_proxy"
+dir="{{ oauth2_proxy_install_path }}"
+cmd="{{ oauth2_proxy_install_path }}/bin/oauth2_proxy --config={{ oauth2_proxy_etc_path }}/oauth2_proxy.conf"
+user="{{ oauth2_proxy_user_name }}"
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"
+log_filename="/var/log/oauth2_proxy/oauth2_proxy.log"
 stdout_log="/var/log/$name.log"
 stderr_log="/var/log/$name.err"
 
@@ -23,7 +24,7 @@ get_pid() {
 }
 
 is_running() {
-    [ -f "$pid_file" ] && ps `get_pid` > /dev/null 2>&1
+    [ -f "$pid_file" ] && ps -p`get_pid` -o pid= > /dev/null 2>&1
 }
 
 case "$1" in
@@ -33,16 +34,23 @@ case "$1" in
     else
         echo "Starting $name"
         cd "$dir"
+
+        pid=
         if [ -z "$user" ]; then
-            sudo $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            sudo $cmd --logging-filename $log_filename &
+            pid=$!
         else
-            sudo -u "$user" $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            sudo -u "$user" $cmd --logging-filename $log_filename &
+            pid=$!
         fi
-        echo $! > "$pid_file"
-        if ! is_running; then
-            echo "Unable to start, see $stdout_log and $stderr_log"
+
+        sleep 1
+        if ! ps -p$pid -o pid= >/dev/null 2>&1; then
+            echo "Unable to start, check logs for details" >&2
             exit 1
         fi
+
+        echo $pid > "$pid_file"
     fi
     ;;
     stop)
@@ -96,3 +104,5 @@ case "$1" in
 esac
 
 exit 0
+
+# vim: ts=4 sw=4 expandtab

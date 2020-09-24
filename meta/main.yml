@@ -1,21 +1,31 @@
 galaxy_info:
-  author: J. Matt Peterson
-  description: LSST SQuaRE's oauth2_proxy packages.
-  company: LSST SQuaRE
-  issue_tracker_url: https://github.com/lsst-sqre/ansible-oauth2_proxy/issues
+  role_name: oauth2_proxy
+  author: J. Matt Peterson, Dan Thomson (
+  description: >
+    This is a fork of LSST SQuaRE's oauth2_proxy packages. I've made some fixes
+    and added some flexibility through the addition of variables that
+    determine users, installation locations, etc. Also a lot of config
+    options were added to the oauth2_proxy config file.
+  issue_tracker_url: https://github.com/dudefellah/ansible-oauth2_proxy/issues
   license: MIT
-  min_ansible_version: 2.0
+  min_ansible_version: 2.4
   platforms:
-  - name: EL
-    versions:
-      - 7
-  - name: Ubuntu
-    versions:
-      - trusty
-      - xenial
+    - name: EL
+      versions:
+        - 7
+        - 8
+    - name: Debian
+        - stretch
+        - buster
+    - name: Ubuntu
+      versions:
+        - xenial
+        - focal
   galaxy_tags:
     - system
     - web
     - centos
     - ubuntu
+    - oauth2
+    - proxy
 dependencies: []

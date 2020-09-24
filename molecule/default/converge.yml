@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-oauth2_proxy"
+      include_role:
+        name: "ansible-oauth2_proxy"
+      vars:
+        oauth2_proxy_client_id: test-client
+        oauth2_proxy_client_secret: 0123456789012345
+        oauth2_proxy_cookie_secret: 0123456789012345
+        oauth2_proxy_email_domains: mytestdomainthingy.com

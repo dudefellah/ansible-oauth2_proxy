@@ -1,0 +1,8 @@
+---
+- name: Install dependency packages
+  package:
+    name:
+      - sudo
+      - tar
+      - gzip
+    state: present

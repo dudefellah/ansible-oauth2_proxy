@@ -1,13 +1,217 @@
+approval_prompt = "{{ oauth2_proxy_approval_prompt }}"
+auth_logging = "{{ oauth2_proxy_auth_logging }}"
+auth_logging_format = "{{ oauth2_proxy_auth_logging_format }}"
+
+
+{% if oauth2_proxy_authenticated_emails_file is not none %}
+authenticated_emails_file = "{{ oauth2_proxy_authenticated_emails_file }}"
+{% endif %}
+azure_tenant = "{{ oauth2_proxy_azure_tenant }}"
+{% if oauth2_proxy_basic_auth_password is not none %}
+basic_auth_password = "{{ oauth2_proxy_basic_auth_password }}"
+{% endif %}
+{% if oauth2_proxy_client_id is not none %}
 client_id = "{{ oauth2_proxy_client_id }}"
+{% endif %}
+{% if oauth2_proxy_client_secret is not none %}
 client_secret = "{{ oauth2_proxy_client_secret }}"
+{% endif %}
+{% if oauth2_proxy_client_secret_file is not none %}
+client_secret_file = "{{ oauth2_proxy_client_secret_file }}"
+{% endif %}
+{% if oauth2_proxy_cookie_domain is not none %}
 cookie_domain = "{{ oauth2_proxy_cookie_domain }}"
+{% endif %}
 cookie_expire = "{{ oauth2_proxy_cookie_expire }}"
+cookie_httponly = "{{ oauth2_proxy_cookie_httponly }}"
 cookie_name = "{{ oauth2_proxy_cookie_name }}"
+cookie_path = "{{ oauth2_proxy_cookie_path }}"
+{% if oauth2_proxy_cookie_refresh is not none %}
+cookie_refresh = "{{ oauth2_proxy_cookie_refresh }}"
+{% endif %}
+{% if oauth2_proxy_cookie_secret is not none %}
 cookie_secret = "{{ oauth2_proxy_cookie_secret }}"
+{% endif %}
 cookie_secure = "{{ oauth2_proxy_cookie_secure }}"
-email_domains = {{ oauth2_proxy_email_domains }}
+cookie_samesite = "{{ oauth2_proxy_cookie_samesite }}"
+{% if oauth2_proxy_custom_templates_dir is not none %}
+custom_templates_dir = "{{ oauth2_proxy_custom_templates_dir }}"
+{% endif %}
+display_htpasswd_form = "{{ oauth2_proxy_display_htpasswd_form }}"
+{% if oauth2_proxy_email_domains is not none %}
+email_domains = {{ oauth2_proxy_email_domains | to_json }}
+{% endif %}
+{% if oauth2_proxy_errors_to_info_log is not none %}
+errors_to_info_log = "{{ oauth2_proxy_errors_to_info_log }}"
+{% endif %}
+{% if oauth2_proxy_extra_jwt_issuers is not none %}
+extra_jwt_issuers = "{{ oauth2_proxy_extra_jwt_issuers }}"
+{% endif %}
+exclude_logging_paths = "{{ oauth2_proxy_exclude_logging_paths }}"
+flush_interval = "{{ oauth2_proxy_flush_interval }}"
+force_https = "{{ oauth2_proxy_force_https }}"
+{% if oauth2_proxy_banner is not none %}
+banner = "{{ oauth2_proxy_banner }}"
+{% endif %}
+{% if oauth2_proxy_footer is not none %}
+footer = "{{ oauth2_proxy_footer }}"
+{% endif %}
+gcp_healthchecks = "{{ oauth2_proxy_gcp_healthchecks }}"
+{% if oauth2_proxy_github_org is not none %}
 github_org = "{{ oauth2_proxy_github_org }}"
+{% endif %}
+{% if oauth2_proxy_github_team is not none %}
+github_team = "{{ oauth2_proxy_github_team }}"
+{% endif %}
+{% if oauth2_proxy_github_repo is not none %}
+github_repo = "{{ oauth2_proxy_github_repo }}"
+{% endif %}
+{% if oauth2_proxy_github_token is not none %}
+github_token = "{{ oauth2_proxy_github_token }}"
+{% endif %}
+{% if oauth2_proxy_github_user is not none %}
+github_user = "{{ oauth2_proxy_github_user }}"
+{% endif %}
+{% if oauth2_proxy_gitlab_group is not none %}
+gitlab_group = "{{ oauth2_proxy_gitlab_group }}"
+{% endif %}
+{% if oauth2_proxy_google_admin_email is not none %}
+google_admin_email = "{{ oauth2_proxy_google_admin_email }}"
+{% endif %}
+{% if oauth2_proxy_google_group is not none %}
+google_group = "{{ oauth2_proxy_google_group }}"
+{% endif %}
+{% if oauth2_proxy_google_service_account_json is not none %}
+google_service_account_json = "{{ oauth2_proxy_google_service_account_json }}"
+{% endif %}
+{% if oauth2_proxy_htpasswd_file is not none %}
+htpasswd_file = "{{ oauth2_proxy_htpasswd_file }}"
+{% endif %}
+http_address = "{{ oauth2_proxy_http_address }}"
+https_address = "{{ oauth2_proxy_https_address }}"
+logging_compress = "{{ oauth2_proxy_logging_compress }}"
+logging_filename = "{{ oauth2_proxy_logging_filename }}"
+logging_local_time = "{{ oauth2_proxy_logging_local_time }}"
+logging_max_age = "{{ oauth2_proxy_logging_max_age }}"
+logging_max_backups = "{{ oauth2_proxy_logging_max_backups }}"
+logging_max_size = "{{ oauth2_proxy_logging_max_size }}"
+{% if oauth2_proxy_jwt_key is not none %}
+jwt_key = "{{ oauth2_proxy_jwt_key }}"
+{% endif %}
+{% if oauth2_proxy_jwt_key_file is not none %}
+jwt_key_file = "{{ oauth2_proxy_jwt_key_file }}"
+{% endif %}
+{% if oauth2_proxy_login_url is not none %}
+login_url = "{{ oauth2_proxy_login_url }}"
+{% endif %}
+insecure_oidc_allow_unverified_email = "{{ oauth2_proxy_insecure_oidc_allow_unverified_email }}"
+insecure_oidc_skip_issuer_verification = "{{ oauth2_proxy_insecure_oidc_skip_issuer_verification }}"
+{% if oauth2_proxy_oidc_issuer_url is not none %}
+oidc_issuer_url = "{{ oauth2_proxy_oidc_issuer_url }}"
+{% endif %}
+{% if oauth2_proxy_oidc_jwks_url is not none %}
+oidc_jwks_url = "{{ oauth2_proxy_oidc_jwks_url }}"
+{% endif %}
 pass_access_token = "{{ oauth2_proxy_pass_access_token }}"
+pass_authorization_header = "{{ oauth2_proxy_pass_authorization_header }}"
+pass_basic_auth = "{{ oauth2_proxy_pass_basic_auth }}"
+prefer_email_to_user = "{{ oauth2_proxy_prefer_email_to_user }}"
 pass_host_header = "{{ oauth2_proxy_pass_host_header }}"
+pass_user_headers = "{{ oauth2_proxy_pass_user_headers }}"
+{% if oauth2_proxy_profile_url is not none %}
+profile_url = "{{ oauth2_proxy_profile_url }}"
+{% endif %}
+prompt = "{{ oauth2_proxy_prompt }}"
 provider = "{{ oauth2_proxy_provider }}"
-upstreams = {{ oauth2_proxy_upstreams }}
+{% if oauth2_proxy_provider_ca_file is not none %}
+provider_ca_file = "{{ oauth2_proxy_provider_ca_file }}"
+{% endif %}
+provider_display_name = "{{ oauth2_proxy_provider_display_name }}"
+ping_path = "{{ oauth2_proxy_ping_path }}"
+ping_user_agent = "{{ oauth2_proxy_ping_user_agent }}"
+proxy_prefix = "{{ oauth2_proxy_proxy_prefix }}"
+proxy_websockets = "{{ oauth2_proxy_proxy_websockets }}"
+{% if oauth2_proxy_pubjwk_url is not none %}
+pubjwk_url = "{{ oauth2_proxy_pubjwk_url }}"
+{% endif %}
+real_client_ip_header = "{{ oauth2_proxy_real_client_ip_header }}"
+{% if oauth2_proxy_redeem_url is not none %}
+redeem_url = "{{ oauth2_proxy_redeem_url }}"
+{% endif %}
+{% if oauth2_proxy_redirect_url is not none %}
+redirect_url = "{{ oauth2_proxy_redirect_url }}"
+{% endif %}
+{% if oauth2_proxy_redis_cluster_connection_urls is not none %}
+redis_cluster_connection_urls = "{{ oauth2_proxy_redis_cluster_connection_urls }}"
+{% endif %}
+{% if oauth2_proxy_redis_connection_url is not none %}
+redis_connection_url = "{{ oauth2_proxy_redis_connection_url }}"
+{% endif %}
+{% if oauth2_proxy_redis_password is not none %}
+redis_password = "{{ oauth2_proxy_redis_password }}"
+{% endif %}
+{% if oauth2_proxy_redis_sentinel_password is not none %}
+redis_sentinel_password = "{{ oauth2_proxy_redis_sentinel_password }}"
+{% endif %}
+{% if oauth2_proxy_redis_sentinel_master_name is not none %}
+redis_sentinel_master_name = "{{ oauth2_proxy_redis_sentinel_master_name }}"
+{% endif %}
+{% if oauth2_proxy_redis_sentinel_connection_urls is not none %}
+redis_sentinel_connection_urls = "{{ oauth2_proxy_redis_sentinel_connection_urls }}"
+{% endif %}
+redis_use_cluster = "{{ oauth2_proxy_redis_use_cluster }}"
+redis_use_sentinel = "{{ oauth2_proxy_redis_use_sentinel }}"
+request_logging = "{{ oauth2_proxy_request_logging }}"
+request_logging_format = "{{ oauth2_proxy_request_logging_format }}"
+{% if oauth2_proxy_resource is not none %}
+resource = "{{ oauth2_proxy_resource }}"
+{% endif %}
+reverse_proxy = "{{ oauth2_proxy_reverse_proxy }}"
+{% if oauth2_proxy_scope is not none %}
+scope = "{{ oauth2_proxy_scope }}"
+{% endif %}
+session_cookie_minimal = "{{ oauth2_proxy_session_cookie_minimal }}"
+session_store_type = "{{ oauth2_proxy_session_store_type }}"
+set_xauthrequest = "{{ oauth2_proxy_set_xauthrequest }}"
+set_authorization_header = "{{ oauth2_proxy_set_authorization_header }}"
+set_basic_auth = "{{ oauth2_proxy_set_basic_auth }}"
+{% if oauth2_proxy_signature_key is not none %}
+signature_key = "{{ oauth2_proxy_signature_key }}"
+{% endif %}
+silence_ping_logging = "{{ oauth2_proxy_silence_ping_logging }}"
+skip_auth_preflight = "{{ oauth2_proxy_skip_auth_preflight }}"
+{% if oauth2_proxy_skip_auth_regex is not none %}
+skip_auth_regex = "{{ oauth2_proxy_skip_auth_regex }}"
+{% endif %}
+skip_auth_strip_headers = "{{ oauth2_proxy_skip_auth_strip_headers }}"
+skip_jwt_bearer_tokens = "{{ oauth2_proxy_skip_jwt_bearer_tokens }}"
+skip_oidc_discovery = "{{ oauth2_proxy_skip_oidc_discovery }}"
+skip_provider_button = "{{ oauth2_proxy_skip_provider_button }}"
+ssl_insecure_skip_verify = "{{ oauth2_proxy_ssl_insecure_skip_verify }}"
+ssl_upstream_insecure_skip_verify = "{{ oauth2_proxy_ssl_upstream_insecure_skip_verify }}"
+standard_logging = "{{ oauth2_proxy_standard_logging }}"
+{% if oauth2_proxy_standard_logging_format is not none %}
+standard_logging_format = "{{ oauth2_proxy_standard_logging_format }}"
+{% endif %}
+{% if oauth2_proxy_tls_cert_file is not none %}
+tls_cert_file = "{{ oauth2_proxy_tls_cert_file }}"
+{% endif %}
+{% if oauth2_proxy_tls_key_file is not none %}
+tls_key_file = "{{ oauth2_proxy_tls_key_file }}"
+{% endif %}
+{% if oauth2_proxy_upstream is not none %}
+upstream = "{{ oauth2_proxy_upstream }}"
+{% endif %}
+user_id_claim = "{{ oauth2_proxy_user_id_claim }}"
+{% if oauth2_proxy_allowed_group is not none %}
+allowed_group = "{{ oauth2_proxy_allowed_group }}"
+{% endif %}
+{% if oauth2_proxy_validate_url is not none %}
+validate_url = "{{ oauth2_proxy_validate_url }}"
+{% endif %}
+{% if oauth2_proxy_whitelist_domain is not none %}
+whitelist_domain = "{{ oauth2_proxy_whitelist_domain }}"
+{% endif %}
+{% if oauth2_proxy_trusted_ip is not none %}
+trusted_ip = "{{ oauth2_proxy_trusted_ip }}"
+{% endif %}
